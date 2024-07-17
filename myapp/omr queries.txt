@@ -1,0 +1,174 @@
+class movie(models.Model):
+
+    title=models.CharField(max_length=200)
+
+    year=models.CharField(max_length=50)
+
+    director=models.CharField(max_length=200)
+
+    run_time=models.PositiveIntegerField()
+
+    language=models.CharField(max_length=200)
+
+    genre=models.CharField(max_length=200)
+
+
+
+=> omr query for inserting a new record
+
+movie.objects.create(title="kgf",year="2018",director="prasanth",run_time=160,language="tamil",genre="action")
+
+=> query for fetching all the records
+
+qs=movie.objects.all()
+
+=> query for taking one movie details
+
+qs=movie.objects.get(id=2)
+
+=> query for fetching the objects  according to the condition
+
+ take the object whose languge= malayalam
+
+ qs=movie.objects.filter(language="malayalam",genre="action")
+
+ => print all movies after the 2021
+
+ in  django shell >,<,>=,<=  doesnot support
+
+    field lookups :
+
+ so   >  -  __gt
+     
+      <  -  __lt
+
+      >=  -  __gte
+
+      >=  -  __lte
+
+
+qs=movie.objects.filter(year__gt - 2021)
+
+
+=> __extact  -  it is used  not to consider case in characters( case insensitive)
+
+
+
+qs= movie.objects.filter(genre__extact="Action")
+
+
+
+=>__icontains  -  evidakilum   than letter indo ennu nokanam
+
+qs= movie.objects.filter(title__icontains="ya")
+
+
+=>  __in  - to find  it is there
+
+filter all movies whose genre "action|drama"
+
+qs=movie.objects.filter(genre__in=["action","drama"])
+
+
+=> update query
+
+movie.objects.filter(id=1).update(director="prashanthan",run_time=120)
+
+
+=> delete query
+
+delete  id =6 movie
+
+movie.objects.filter(id=6).delete()
+
+
+=> fetch all geners(column)
+
+qs= movie.objects.values("genre")
+
+<QuerySet [{'genre': 'action'}, {'genre': 'love'}, {'genre': 'action'}, {'genre': 'family'}, {'genre': 'crime triller'}, {'genre': 'action romantic'}, {'genre': 'devotionaal'}]>
+
+=> this query set  avvmu list ayyitu display cheeyane
+
+qs=movie.objects.values_list("genre")
+
+<QuerySet [('action',), ('love',), ('action',), ('family',), ('crime triller',), ('action romantic',), ('devotionaal',)]>
+
+
+=> in the above output if we want to remove the tuple braces
+
+qs= movie.objects.values_list("genre",flat=True)
+
+<QuerySet ['action', 'love', 'action', 'family', 'crime triller', 'action romantic', 'devotionaal']>
+
+=> in the above set to remove the dupkicate values
+
+qs= movie.objects.values_list("genre",flat=True).distinct()
+
+<QuerySet ['action', 'love', 'family', 'crime triller', 'action romantic', 'devotionaal']>
+
+
+=> fetch all languages in the movie
+
+qs= movie.objects.values_list("languages",flat=True).distinct()
+
+=> sorting query
+
+ascending order
+
+variable=modelname.objects.all().order_by("column name")
+
+eg:
+ qs=movie.objects.all().order_by("run_time")
+
+
+ descending order
+
+ qs= movie.objects.all().order_by(-"run_time")
+
+=> aggregrate functions(min,max,sum,count,avg)
+
+aggregrate functions should be import first
+
+from django.db.models import Min,Max,Count,Avg,sum
+
+qs=movie.objects.aggregrate(Max("run_time"))
+
+
+=> fetch all movies with longest run_time
+
+qs= movie.objects.values("run_time").aggregate(longest=Max("run_time"))
+
+data=movie.objects.filter(run_time=qs.get("longest"))
+
+
+<QuerySet [<movie: neru>, <movie: mca>, <movie: malikapuram>]>
+
+
+=>group movies with respect to genre
+
+annotate  - it is used to group
+
+qs=movie.objects.values("genre").annotate(summary=count("genre"))
+
+<QuerySet [{'genre': 'action', 'summary': 2}, {'genre': 'action romantic', 'summary': 1}, {'genre': 'crime triller', 'summary': 1}, {'genre': 'devotionaal', 'summary': 1}, {'genre': 'family', 'summary': 1}, {'genre': 'love', 'summary': 1}]>
+>>>
+
+=> group movies wrt languages
+
+qs=movie.objects.values("language").annotate(count=Count("language"))
+
+
+
+html inside 
+
+
+ {% for m in data%}
+
+     title={{m.title}}
+     language={{m.language}}
+     year={{m.year}}
+     run_time={{m.run_time}}
+     director={{m.director}}
+     <hr>    
+    {%endfor%}

@@ -1,0 +1,244 @@
+schema:Movie
+attributes:title,year,director,run_time,language,gener,producer
+
+
+1) api for listing all movies
+
+   url:localhost:8000/api/movies/
+
+   method:GET
+
+   body:nill
+
+   status:pending
+
+
+2) api for creating movie
+
+  url:localhost:8000/api/movie/
+
+  method:POST 
+  
+  body:{"title":movie title,"year":movie year,
+        "director":movie directorname,
+        "run_time":rum_time,"language":movie language,
+        "genre":movie gener,"producer":producer name}
+  
+  status:pending
+
+3)api for fetching a specfic movie details
+
+  url:localhost:8000/api/movies/{id}
+
+  method:GET
+
+  body:nill
+
+  status:pending
+
+4)api for update movie details
+
+   url:localhost:8000/api/movies/{id}
+
+   method:PUT
+
+   body:{"title":movie title,"year":movie year,
+        "director":movie directorname,
+        "run_time":rum_time,"language":movie language,
+        "genre":movie gener,"producer":producer name}
+   
+   status:pending
+
+5) api for delete movie
+
+    url:localhost:8000/api/movie/{id}/
+
+    method:DELETE  
+
+    body:nill
+
+    statue:pending
+
+6)api for listing all languages
+
+    url:localhost:8000/api/movies/languages/
+
+    method:get
+
+    body:nill
+
+
+django rest framework
+
+to use djangorest framework
+step1: install  django restframework
+
+step2: settings.py
+      
+      (add rest_framework in installed app)
+       installed_apps =[
+                       
+                       "rest_framework" 
+       ]
+
+step3:creating a new app or using the existing app view 
+
+
+step:4 creating view
+
+  restframework>views.py >API view
+  restframework>response.py >class  Response
+
+  class MovieListCreateView(APIView):
+
+       def get(self,request,*args,**kwargs):
+
+           //logic for returning all movies
+
+           //response class is responsible foer converting python 
+            native type(set,tuple,list,dictionary)
+
+            return Response(data={"message":"movie-list"})
+
+        def post(self,request,*args,**kwargs):
+
+            //logic for adding a new movie
+            return Response(data={"messages":"movie-created"})
+
+
+    class MovieRetrieveUpdateDestroyView(APIView):
+
+        def get(self,request,*args,**kwargs):
+
+            # extract id from url and return moviedetails with movie id=id
+
+
+            return Response(data={"messages":"movie detail"})
+
+
+        def put(self,request,*args,**kwargs):
+
+            # extract movie id and update movie detail
+
+            return Response(data={"message":"movie-update"})
+
+        def delete(self,request,*args,**kwargs):
+
+            #extract id from url and delete movie with movieid =id
+
+            return Response(data={"messages":"movie-delete"})
+
+
+
+#  serialization
+
+    serialization is the process of converting from query set  into  python native type or converting python antive type into query set.
+
+    deserialization  is the process to converting python native type into query set
+ 
+=> creating serialization 
+
+ api=>serializer.py=> 
+                    from resr_framework import serialization
+
+                    from myapp.models import movie
+
+                    class MovieSerializer(serializers.Modelserializer):
+
+                          class mete:
+                              
+                              model:Movie
+
+                              fields="__all__"
+
+=======================================================================================================
+
+ api documentation
+
+schema:Actor
+attribute:name,age picture,gender
+
+1)api for listing actors
+
+    url:localhost:8000/api/actors/
+
+    method:GET
+
+    body:nill
+
+    status:pending
+
+2)api for creating actor
+
+    url:localhost:8000/api/actors/
+
+    method:POST
+
+    body:{"name":actor.name,
+           "age":actor.age,
+           "picture":actor_picture,
+           "gender":actor gender
+    
+    }
+
+    status:pending
+
+3)api for fetching specific actor details
+
+    url:localhost:8000/api/actore/{id}/
+
+    method:GET
+
+    body=nill
+
+    status:pending
+
+4)api for update actor details
+
+    url:localhost:8000/api/actors/{id}/
+
+
+    method:put
+
+    
+    body:{"name":actor.name,
+           "age":actor.age,
+           "picture":actor_picture,
+           "gender":actor gender
+    
+    }
+
+    status:pending  
+
+5)api for delete actor
+
+    url:localhost:8000/api/actors/{id}/
+
+    method:DELETE  
+
+    body:nill
+
+    status:pending
+
+
+===========================
+
+schema=Review 
+
+attributes:[id,comment,rating,user,album_object,created_date]
+
+1)api for adding a Review
+
+  url:localhost:8000/api/albums/{id}/add_review/
+
+  method:post
+
+  body:(comment,rating,user)
+
+
+
+api call for adding a new track
+
+    url:localhost:8000/api/albums/tracks/
+    method:POST
+    body:{title,duration,track,singer,genre}
